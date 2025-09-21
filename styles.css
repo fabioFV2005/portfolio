@@ -9,6 +9,17 @@
     box-sizing: border-box;
 }
 
+html {
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+}
+
 :root {
     /* Paleta de colores moderna - blancos, cremas y pasteles */
     --primary-color: #4f46e5;           /* Índigo elegante */
@@ -95,11 +106,56 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--spacing-lg);
+    width: 100%;
+    overflow-x: hidden;
 }
 
 @media (max-width: 768px) {
     .container {
         padding: 0 var(--spacing-md);
+        max-width: 100vw;
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 var(--spacing-sm);
+    }
+    
+    /* Forzar que todos los grids sean de una columna en móviles pequeños */
+    .skills-grid,
+    .projects-grid {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+    
+    /* Prevenir overflow horizontal */
+    .image-container {
+        width: 100%;
+        max-width: 300px;
+        height: 300px;
+    }
+    
+    /* Asegurar que ningún elemento exceda el ancho de pantalla */
+    * {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 360px) {
+    .container {
+        padding: 0 calc(var(--spacing-sm) * 0.75);
+    }
+    
+    .image-container {
+        max-width: 280px;
+        height: 280px;
+    }
+    
+    /* Reducir gaps en pantallas muy pequeñas */
+    .skills-grid,
+    .projects-grid {
+        gap: var(--spacing-md);
     }
 }
 
@@ -542,7 +598,8 @@ body {
 
 .image-container {
     position: relative;
-    width: 400px;
+    width: 100%;
+    max-width: 400px;
     height: 400px;
     display: flex;
     align-items: center;
@@ -573,8 +630,8 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: calc(100% + 40px);
-    height: calc(100% + 40px);
+    width: 100%;
+    height: 100%;
     background: var(--gradient-primary);
     border-radius: var(--radius-2xl);
     opacity: 0.2;
@@ -1049,7 +1106,7 @@ body[data-theme="dark"] .image-glow {
 
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: var(--spacing-2xl);
     margin-top: var(--spacing-2xl);
 }
@@ -1214,7 +1271,7 @@ body[data-theme="dark"] .image-glow {
 
 .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--spacing-2xl);
     margin-bottom: var(--spacing-3xl);
 }
@@ -3037,6 +3094,8 @@ body[data-theme="dark"] .typing-text::after {
     overflow: hidden;
     position: relative;
     animation: slideUp 0.3s ease;
+    display: flex;
+    flex-direction: column;
 }
 
 /* CV Modal Header */
@@ -3047,6 +3106,8 @@ body[data-theme="dark"] .typing-text::after {
     padding: 20px 25px;
     background: var(--section-bg);
     border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+    min-height: 60px;
 }
 
 .cv-modal-header h3 {
@@ -3057,6 +3118,10 @@ body[data-theme="dark"] .typing-text::after {
     display: flex;
     align-items: center;
     gap: 10px;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .cv-modal-header h3::before {
@@ -3102,9 +3167,10 @@ body[data-theme="dark"] .typing-text::after {
 
 /* CV Modal Body */
 .cv-modal-body {
-    height: calc(100% - 81px);
+    flex: 1;
     position: relative;
     overflow: hidden;
+    min-height: 0;
 }
 
 .cv-modal-body iframe {
@@ -3112,6 +3178,7 @@ body[data-theme="dark"] .typing-text::after {
     height: 100%;
     border: none;
     background: var(--bg-color);
+    display: block;
 }
 
 /* CV Loading State */
@@ -3128,6 +3195,9 @@ body[data-theme="dark"] .typing-text::after {
     justify-content: center;
     gap: 20px;
     transition: opacity 0.3s ease;
+    padding: 20px;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .cv-loading.hidden {
@@ -3142,12 +3212,15 @@ body[data-theme="dark"] .typing-text::after {
     border-top: 3px solid var(--primary-color);
     border-radius: 50%;
     animation: spin 1s linear infinite;
+    flex-shrink: 0;
 }
 
 .cv-loading p {
     color: var(--text-muted);
     font-size: 1rem;
     margin: 0;
+    line-height: 1.5;
+    max-width: 300px;
 }
 
 /* CV Modal Animations */
@@ -3173,19 +3246,42 @@ body[data-theme="dark"] .typing-text::after {
 }
 
 /* CV Modal Responsive */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .cv-modal-content {
         width: 95%;
-        height: 95vh;
+        height: 85vh;
+        max-height: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .cv-modal {
+        padding: 15px;
+        align-items: flex-start;
+        padding-top: 20px;
+    }
+    
+    .cv-modal-content {
+        width: 100%;
+        height: calc(100vh - 40px);
         border-radius: 15px;
+        max-width: none;
     }
     
     .cv-modal-header {
         padding: 15px 20px;
+        flex-wrap: wrap;
+        gap: 10px;
     }
     
     .cv-modal-header h3 {
         font-size: 1.2rem;
+        flex: 1;
+        min-width: 150px;
+    }
+    
+    .cv-modal-controls {
+        gap: 8px;
     }
     
     .cv-download-btn,
@@ -3194,25 +3290,124 @@ body[data-theme="dark"] .typing-text::after {
         height: 35px;
         font-size: 14px;
     }
+    
+    .cv-modal-body {
+        height: calc(100% - 75px);
+    }
 }
 
 @media (max-width: 480px) {
     .cv-modal {
         padding: 10px;
+        padding-top: 15px;
     }
     
     .cv-modal-content {
         width: 100%;
-        height: 100vh;
-        border-radius: 10px;
+        height: calc(100vh - 30px);
+        border-radius: 12px;
+        min-height: 400px;
     }
     
     .cv-modal-header {
         padding: 12px 15px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
     }
     
     .cv-modal-header h3 {
         font-size: 1.1rem;
+        width: 100%;
+    }
+    
+    .cv-modal-controls {
+        align-self: flex-end;
+        gap: 6px;
+    }
+    
+    .cv-download-btn,
+    .cv-close-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+    
+    .cv-modal-body {
+        height: calc(100% - 85px);
+    }
+    
+    .cv-loading {
+        padding: 20px;
+    }
+    
+    .cv-loading p {
+        font-size: 0.9rem;
+        text-align: center;
+    }
+}
+
+@media (max-width: 360px) {
+    .cv-modal {
+        padding: 5px;
+        padding-top: 10px;
+    }
+    
+    .cv-modal-content {
+        height: calc(100vh - 20px);
+        border-radius: 8px;
+    }
+    
+    .cv-modal-header {
+        padding: 10px 12px;
+    }
+    
+    .cv-modal-header h3 {
+        font-size: 1rem;
+    }
+    
+    .cv-modal-body {
+        height: calc(100% - 75px);
+    }
+}
+
+/* ===============================================
+   REGLAS ANTI-OVERFLOW GLOBALES
+   =============================================== */
+
+/* Prevenir overflow horizontal en todos los dispositivos móviles */
+@media (max-width: 768px) {
+    html, body {
+        overflow-x: hidden !important;
+        max-width: 100vw !important;
+    }
+    
+    /* Asegurar que ningún elemento cause overflow */
+    *, *::before, *::after {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Contenedores principales */
+    .hero, .about, .skills, .projects, .contact {
+        overflow-x: hidden;
+        width: 100%;
+        max-width: 100vw;
+    }
+    
+    /* Grids responsive forzados */
+    .about-content,
+    .contact-content,
+    .hero-content {
+        grid-template-columns: 1fr !important;
+    }
+    
+    /* Elementos con posición absoluta */
+    .floating-elements,
+    .hero-decoration,
+    .bg-decoration {
+        max-width: 100vw;
+        overflow: hidden;
     }
 }
 
