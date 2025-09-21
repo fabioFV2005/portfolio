@@ -12,12 +12,22 @@
 html {
     overflow-x: hidden;
     scroll-behavior: smooth;
+    max-width: 100vw;
 }
 
 body {
     overflow-x: hidden;
     width: 100%;
     max-width: 100vw;
+    position: relative;
+}
+
+/* Prevenir overflow horizontal en TODAS las secciones principales */
+.hero, .about, .skills, .projects, .contact {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
+    position: relative;
 }
 
 :root {
@@ -382,6 +392,8 @@ body {
     gap: var(--spacing-4xl);
     align-items: center;
     min-height: 70vh;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .hero-greeting {
@@ -666,6 +678,8 @@ body[data-theme="dark"] .image-glow {
     height: 100%;
     top: 0;
     left: 0;
+    overflow: hidden;
+    max-width: 100vw;
 }
 
 .tech-icon {
@@ -815,6 +829,8 @@ body[data-theme="dark"] .image-glow {
     gap: var(--spacing-4xl);
     align-items: start;
     margin-top: var(--spacing-2xl);
+    overflow-x: hidden;
+    width: 100%;
 }
 
 .about-intro {
@@ -1892,12 +1908,16 @@ body[data-theme="dark"] .image-glow {
     }
     
     .hero-content {
+        grid-template-columns: 1fr !important;
         gap: var(--spacing-3xl);
+        text-align: center;
     }
     
     .about-content,
     .contact-content {
+        grid-template-columns: 1fr !important;
         gap: var(--spacing-2xl);
+        text-align: center;
     }
     
     .feature-grid {
